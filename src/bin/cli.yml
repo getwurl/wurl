@@ -1,0 +1,53 @@
+name: wsy
+args:
+    - header:
+        short: H
+        long: header
+        help: Adds headers to any HTTP request made
+        takes_value: true
+        value_name: header:value
+    - head:
+        short: I
+        long: head
+        help: Prints HTTP headers
+    - ping:
+        short: p
+        long: ping
+        help: Specifies an interval to send a ping to the server
+        takes_value: true
+        value_name: seconds
+    - ping_msg:
+        long: ping-msg
+        help: Specifies a message to send when pinging the server
+    - login:
+        short: l
+        long: login
+        help: URL to authenticate with before sending the WebSocket request
+        takes_value: true
+        value_name: url
+    - binary:
+        short: b
+        long: binary
+        help: Enables binary mode
+    - follow_redirect:
+        long: follow-redirect
+        help: Honour HTTP redirection when authenticating
+    - echo:
+        short: e
+        long: echo
+        help: Enables echoing of outgoing frames
+    - verbose:
+        short: v
+        long: verbose
+        multiple: true
+        help: Sets the level of verbosity
+    - profile:
+        short: P
+        long: profile
+        value_name: file
+        help: Use a configuration profile
+        takes_value: true
+    - URL:
+        help: URL of the server to connect to
+        required: false
+        index: 1

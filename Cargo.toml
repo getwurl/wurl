@@ -1,0 +1,31 @@
+[package]
+name = "wsy"
+description = "WebSockets CLI for developers"
+version = "0.1.0"
+authors = ["Espen Henriksen <dev+wsy@henriksen.is>"]
+keywords = ["websocket", "ws", "cli", "devtool"]
+license = "GPL-3.0"
+repository = "https://github.com/esphen/wsy"
+readme = "README.md"
+
+[[bin]]
+doc = false
+name = "wsy"
+path = "src/bin/wsy.rs"
+required-features = ["cli"]
+
+[dependencies]
+url = "1.7.0"
+
+[dependencies.ws]
+version = "0.7.6"
+features = ["ssl"]
+
+[dependencies.clap]
+optional = true
+version = "2.31.2"
+features = ["yaml"]
+
+[features]
+default = ["cli"]
+cli = ["clap"]
