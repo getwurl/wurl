@@ -22,13 +22,12 @@ impl Handler for Client {
     }
 
     fn on_message(&mut self, msg: Message) -> WsResult<()> {
-      // Close the connection when we get a response from the server
       println!("{}", msg);
-      self.out.close(CloseCode::Normal)
     }
 
     fn on_error(&mut self, err: WsError) {
-      eprintln!("Error occured in WebSocket thread: {:?}", err);
+      eprintln!("Error occured: {}", err);
+      exit(1);
     }
 
     fn on_shutdown(&mut self) {
