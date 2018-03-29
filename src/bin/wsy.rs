@@ -1,9 +1,10 @@
 #[macro_use]
 extern crate clap;
+extern crate rprompt;
 extern crate wsy;
 
-use std::io::stdin;
 use std::process::exit;
+use rprompt::read_reply;
 use wsy::util::options::Options;
 use wsy::network::ws::connect;
 use clap::App;
@@ -38,12 +39,13 @@ fn main() {
     };
 
     loop {
-        let mut input = String::new();
-        match stdin().read_line(&mut input) {
-            Ok(_) => {
-                sender
-                    .send(input)
-                    .expect("Failed to send WebSocket message");
+        match read_reply() {
+            Ok(input) => {
+                if !input.trim().is_empty() {
+                    sender
+                        .send(input)
+                        .expect("Failed to send WebSocket message");
+                }
             }
             Err(error) => eprintln!("error: {}", error),
         }
