@@ -3,6 +3,7 @@ extern crate clap;
 extern crate wsy;
 
 use std::io::stdin;
+use std::process::exit;
 use wsy::util::options::Options;
 use wsy::network::ws::connect;
 use clap::App;
@@ -24,13 +25,21 @@ fn main() {
 
     opts.verbosity = matches.occurrences_of("verbose") as u8;
 
-    let sender = connect(opts).unwrap();
+    let sender = match connect(opts) {
+        Ok(result) => result,
+        Err(error) => {
+            eprintln!("Failed to connect to WebSocket server: {}", error);
+            exit(1);
+        }
+    };
 
     loop {
         let mut input = String::new();
         match stdin().read_line(&mut input) {
-            Ok(n) => {
-                sender.send(input);
+            Ok(_) => {
+                sender
+                    .send(input)
+                    .expect("Failed to send WebSocket message");
             }
             Err(error) => eprintln!("error: {}", error),
         }

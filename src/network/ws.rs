@@ -19,7 +19,7 @@ struct Client {
 impl Handler for Client {
     fn on_open(&mut self, _: Handshake) -> WsResult<()> {
         eprintln!("Connected to {}", self.options.url);
-        self.out.send("Hello WebSocket")
+        Ok(())
     }
 
     fn on_message(&mut self, msg: Message) -> WsResult<()> {
@@ -29,6 +29,23 @@ impl Handler for Client {
 
     fn on_error(&mut self, err: WsError) {
         eprintln!("Error occured: {}", err);
+        eprintln!("Exiting");
+        self.out
+            .close(CloseCode::Normal)
+            .expect("Failed to close socket");
+        exit(1);
+    }
+
+    fn on_close(&mut self, code: CloseCode, reason: &str) {
+        if reason.is_empty() {
+            eprintln!("Recieved close control frame. Exit code: {:?}", code);
+        } else {
+            eprintln!(
+                "Recieved close control frame. Reason: {} ({:?})",
+                reason, code
+            );
+        }
+        eprintln!("Exiting");
         exit(1);
     }
 
@@ -40,15 +57,17 @@ impl Handler for Client {
 
 pub fn connect(options: Options) -> Result<Sender, WsError> {
     let url = options.url.clone();
-    let mut ws = try!(WebSocket::new(move |out| Client {
+    let mut ws = WebSocket::new(move |out| Client {
         out: out,
         options: options.clone(),
-    }));
-    let parsed = try!(Url::parse(&url).map_err(|err| WsError::new(
-        ErrorKind::Internal,
-        format!("Unable to parse {} as url due to {:?}", &url, err)
-    )));
-    try!(ws.connect(parsed));
+    })?;
+    let parsed = Url::parse(&url).map_err(|err| {
+        WsError::new(
+            ErrorKind::Internal,
+            format!("Unable to parse {} as url due to {:?}", &url, err),
+        )
+    })?;
+    ws.connect(parsed)?;
     let sender = ws.broadcaster();
 
     thread::Builder::new()
@@ -56,7 +75,8 @@ pub fn connect(options: Options) -> Result<Sender, WsError> {
         .spawn(move || {
             // This blocks the thread
             ws.run()
-        });
+        })
+        .expect("Failed to start WebSocket thread");
 
     Ok(sender)
 }
