@@ -24,6 +24,7 @@ impl Handler for Client {
 
     fn on_message(&mut self, msg: Message) -> WsResult<()> {
         println!("{}", msg);
+        Ok(())
     }
 
     fn on_error(&mut self, err: WsError) {
