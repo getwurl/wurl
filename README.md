@@ -14,7 +14,7 @@ First party distribution:
 Third party distibution:
 - None yet
 
-### [crates.io][crates.io]
+### [crates.io][cratesio]
 
     $ cargo install wsy
 
@@ -41,5 +41,5 @@ so, please make a [pull request][pull_request] to add it to the list above.
 
 [wsta]: https://github.com/esphen/wsta/
 [crates.io]: https://crates.io
-[docker]:
+[docker]: https://store.docker.com/images/esphen/wsy
 [pull_request]: https://github.com/esphen/wsta2/issues/new?title=New%20package:%20%3CInsert%20OS%20or%20package%20here%3E&labels=packages
