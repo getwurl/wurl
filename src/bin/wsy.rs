@@ -1,4 +1,5 @@
-#[macro_use] extern crate clap;
+#[macro_use]
+extern crate clap;
 extern crate wsy;
 
 use std::io::stdin;
@@ -31,7 +32,7 @@ fn main() {
             Ok(n) => {
                 sender.send(input);
             }
-            Err(error) => eprintln!("error: {}", error)
+            Err(error) => eprintln!("error: {}", error),
         }
     }
 }

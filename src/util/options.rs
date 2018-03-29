@@ -3,7 +3,6 @@ use std::vec::Vec;
 
 #[derive(Clone, Debug)]
 pub struct Options {
-
     /// The verbosity level of the application. Should be a number
     /// between 0 and 4.
     /// * 0:   NO LOGGING
@@ -50,9 +49,8 @@ pub struct Options {
 
     /// Specifies the amount of bytes per frame to send when
     /// sending binary data.
-    pub binary_frame_size: String
+    pub binary_frame_size: String,
 }
-
 
 impl Default for Options {
     fn default() -> Options {
@@ -68,7 +66,7 @@ impl Default for Options {
             ping_interval: None,
             ping_msg: String::from("ping"),
             binary_mode: false,
-            binary_frame_size: String::from("256")
+            binary_frame_size: String::from("256"),
         }
     }
 }
@@ -88,7 +86,7 @@ impl Options {
             ping_interval: None,
             ping_msg: String::from("ping"),
             binary_mode: false,
-            binary_frame_size: String::from("256")
+            binary_frame_size: String::from("256"),
         }
     }
 }
