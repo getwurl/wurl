@@ -17,6 +17,7 @@ pub fn connect(options: Options) -> Result<Sender, WsError> {
             format!("Unable to parse {} as url due to {:?}", &url, err),
         )
     })?;
+
     ws.connect(parsed)?;
     let sender = ws.broadcaster();
 

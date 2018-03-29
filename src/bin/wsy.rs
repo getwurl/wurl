@@ -10,13 +10,12 @@ use clap::App;
 
 fn main() {
     let yaml = load_yaml!("cli.yml");
-    let matches = App::from_yaml(yaml)
+    let mut app = App::from_yaml(yaml)
         .name(crate_name!())
         .version(crate_version!())
         .author(crate_authors!())
-        .about(crate_description!())
-        .get_matches();
-
+        .about(crate_description!());
+    let matches = app.clone().get_matches();
     let mut opts = Options::default();
 
     if let Some(url) = matches.value_of("URL") {
@@ -24,6 +23,11 @@ fn main() {
     }
 
     opts.verbosity = matches.occurrences_of("verbose") as u8;
+
+    if opts.url.is_empty() {
+        app.print_help().expect("Failed to print help message");
+        exit(1);
+    }
 
     let sender = match connect(opts) {
         Ok(result) => result,

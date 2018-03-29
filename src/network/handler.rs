@@ -5,16 +5,11 @@ use url::Url;
 use ws::{CloseCode, Error as WsError, Handler, Handshake, Message, Request, Result as WsResult,
          Sender};
 
-// Our Handler struct.
-// Here we explicity indicate that the Client needs a Sender,
-// whereas a closure captures the Sender for us automatically.
 pub struct Client {
     pub out: Sender,
     pub options: Options,
 }
 
-// We implement the Handler trait for Client so that we can get more
-// fine-grained control of the connection.
 impl Handler for Client {
     /// A method for creating the initial handshake request for WebSocket clients.
     /// Used to set headers on the initial request.
