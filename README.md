@@ -8,13 +8,13 @@ but is subject to change (please suggest more names!).
 
 ## Distribution
 First party distribution:
-- [crates.io](#crates.io)
+- [crates.io](#cratesio)
 - [docker](#docker)
 
 Third party distibution:
 - None yet
 
-### [crates.io][cratesio]
+### [crates.io][crates.io]
 
     $ cargo install wsy
 
