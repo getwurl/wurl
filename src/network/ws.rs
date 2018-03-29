@@ -3,8 +3,8 @@ use std::process::exit;
 use std::thread;
 use util::options::Options;
 use url::Url;
-use ws::{CloseCode, Error as WsError, ErrorKind, Handler, Handshake, Message, Result as WsResult,
-         Sender, WebSocket};
+use ws::{CloseCode, Error as WsError, ErrorKind, Handler, Handshake, Message, Request,
+         Result as WsResult, Sender, WebSocket};
 
 // Our Handler struct.
 // Here we explicity indicate that the Client needs a Sender,
@@ -17,6 +17,15 @@ struct Client {
 // We implement the Handler trait for Client so that we can get more
 // fine-grained control of the connection.
 impl Handler for Client {
+    /// A method for creating the initial handshake request for WebSocket clients.
+    /// Used to set headers on the initial request.
+    fn build_request(&mut self, url: &Url) -> Result<Request, WsError> {
+        let mut req = Request::from_url(url)?;
+        req.headers_mut()
+            .push(("Origin".into(), get_origin(url).into()));
+        Ok(req)
+    }
+
     fn on_open(&mut self, _: Handshake) -> WsResult<()> {
         eprintln!("Connected to {}", self.options.url);
         Ok(())
@@ -53,6 +62,17 @@ impl Handler for Client {
         eprintln!("Request to shutdown recieved from server. Exiting.");
         exit(1)
     }
+}
+
+/// Parses an Origin string from a websocket URL, replacing ws[s] with http[s].
+fn get_origin(url: &Url) -> String {
+    let scheme = if url.scheme() == "wss" {
+        "https"
+    } else {
+        "http"
+    };
+
+    format!("{}://{}", scheme, url.host_str().unwrap_or(""))
 }
 
 pub fn connect(options: Options) -> Result<Sender, WsError> {
