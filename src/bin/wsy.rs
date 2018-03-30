@@ -1,6 +1,9 @@
 #[macro_use]
 extern crate clap;
+#[macro_use]
+extern crate log;
 extern crate rprompt;
+extern crate stderrlog;
 extern crate wsy;
 
 use std::process::exit;
@@ -21,12 +24,13 @@ fn main() {
     let matches = app.clone().get_matches();
     let mut opts = Options::default();
 
+    opts.verbosity = matches.occurrences_of("verbose") as u8;
+    opts.quiet = matches.is_present("quiet");
+    opts.print_headers = matches.is_present("head");
     if let Ok(url) = value_t!(matches, "url", String) {
         opts.url = url;
     }
 
-    opts.verbosity = matches.occurrences_of("verbose") as u8;
-    opts.print_headers = matches.is_present("head");
 
     if let Ok(headers) = values_t!(matches, "headers", String) {
         opts.headers = headers;
@@ -36,6 +40,15 @@ fn main() {
         app.print_help().expect("Failed to print help message");
         exit(1);
     }
+
+    stderrlog::new()
+        .module(module_path!())
+        .quiet(opts.quiet)
+        .verbosity(opts.verbosity as usize)
+        .init()
+        .expect("Failed to instantiate logger");
+
+    info!("Parsed options as: {:?}", opts);
 
     let sender = match connect(opts) {
         Ok(result) => result,
@@ -57,13 +70,13 @@ fn main() {
             Err(error) => {
                 match error.kind() {
                     std::io::ErrorKind::UnexpectedEof => {
-                        //log!(3, "Encounteded EOF in stdin, sleeping");
+                        trace!("Encounteded EOF in stdin, sleeping");
                         sleep(Duration::from_secs(1));
                     }
                     _ => {
-                        //log!(1, "Error: {:?}", err);
+                        warn!("Error: {:?}", error);
                         eprintln!("error: {}", error);
-                        //exit(2);
+                        exit(2);
                     }
                 }
             }

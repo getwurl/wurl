@@ -32,7 +32,11 @@ args:
         short: v
         long: verbose
         multiple: true
-        help: Sets the level of verbosity
+        help: Increments verbosity by one (up to four)
+    - quiet:
+        short: q
+        long: quiet
+        help: Supresses all output except incoming frames
     - profile:
         short: c
         long: config

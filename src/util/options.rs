@@ -12,6 +12,9 @@ pub struct Options {
     /// * >=4: BINARY LOGGING
     pub verbosity: u8,
 
+    /// Supresses all output except incoming frames
+    pub quiet: bool,
+
     /// The WebSocket URL to connect to.
     pub url: String,
 
@@ -42,6 +45,7 @@ impl Default for Options {
             follow_redirect: false,
             echo: false,
             verbosity: 0,
+            quiet: false,
             print_headers: false,
             headers: Vec::new(),
         }
@@ -57,6 +61,7 @@ impl Options {
             follow_redirect: false,
             echo: false,
             verbosity: 0,
+            quiet: false,
             print_headers: false,
             headers: Vec::new(),
         }
