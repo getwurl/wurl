@@ -40,8 +40,9 @@ args:
         help: Use a configuration file
         takes_value: true
         env: WSY_PROFILE
-    - URL:
+    - url:
         help: URL of the server to connect to
         required: false
         index: 1
+        value_name: URL
         env: WSY_URL

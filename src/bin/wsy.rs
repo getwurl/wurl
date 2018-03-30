@@ -21,8 +21,8 @@ fn main() {
     let matches = app.clone().get_matches();
     let mut opts = Options::default();
 
-    if let Some(url) = matches.value_of("URL") {
-        opts.url = String::from(url);
+    if let Ok(url) = value_t!(matches, "url", String) {
+        opts.url = url;
     }
 
     opts.verbosity = matches.occurrences_of("verbose") as u8;
