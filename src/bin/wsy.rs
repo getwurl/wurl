@@ -4,6 +4,8 @@ extern crate rprompt;
 extern crate wsy;
 
 use std::process::exit;
+use std::thread::sleep;
+use std::time::Duration;
 use rprompt::read_reply;
 use wsy::util::options::Options;
 use wsy::network::ws::connect;
@@ -24,6 +26,7 @@ fn main() {
     }
 
     opts.verbosity = matches.occurrences_of("verbose") as u8;
+    opts.print_headers = matches.is_present("head");
 
     if opts.url.is_empty() {
         app.print_help().expect("Failed to print help message");
@@ -47,7 +50,19 @@ fn main() {
                         .expect("Failed to send WebSocket message");
                 }
             }
-            Err(error) => eprintln!("error: {}", error),
+            Err(error) => {
+                match error.kind() {
+                    std::io::ErrorKind::UnexpectedEof => {
+                        //log!(3, "Encounteded EOF in stdin, sleeping");
+                        sleep(Duration::from_secs(1));
+                    }
+                    _ => {
+                        //log!(1, "Error: {:?}", err);
+                        eprintln!("error: {}", error);
+                        //exit(2);
+                    }
+                }
+            }
         }
     }
 }

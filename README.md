@@ -5,6 +5,35 @@ but is subject to change (please suggest more names!).
 
 [![Build Status](https://travis-ci.org/esphen/wsta2.svg?branch=master)](https://travis-ci.org/esphen/wsta2)
 
+## wsy vs wsta
+### Pros
+- Ground up rewrite using a modern rust toolchain and libraries
+- (Should be) Much faster and handle higher throughput due to new async, event
+  driven architecture and no locking
+- Is now a library in addition to a CLI which makes it possible for rust
+  programmers to programmatically control wsy
+- Supports control frames
+- Follows the unix philosophy, and is just as pipe-friendly as wsta
+- Supports musl-based OSes via first-party distributed docker image
+
+### Cons
+- Does not support binary data. If this is requested enough, it may in the
+  future
+- Does not have first party distribution through OS package managers. This will
+  have to be done by volunteers
+
+## Control frames
+
+It will be supported to send control frames to the server using commands. These
+will be:
+
+- `/ping` - Sends a ping frame
+- `/ping <message>` - Sends a ping frame with the given message
+- `/pong` - Sends a pong frame
+- `/pong <message>` - Sends a pong frame with the given message
+- `/close <code>` - Sends a close code to the server
+- `/close <code> <msg>` - Sends a close code with a given message to the server
+
 
 ## Distribution
 First party distribution:

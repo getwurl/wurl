@@ -2,8 +2,8 @@ use std::result::Result;
 use std::process::exit;
 use util::options::Options;
 use url::Url;
-use ws::{CloseCode, Error as WsError, Handler, Handshake, Message, Request, Result as WsResult,
-         Sender};
+use ws::{CloseCode, Error as WsError, Handler, Handshake, Message, Request, Response,
+         Result as WsResult, Sender};
 
 pub struct Client {
     pub out: Sender,
@@ -17,7 +17,24 @@ impl Handler for Client {
         let mut req = Request::from_url(url)?;
         req.headers_mut()
             .push(("Origin".into(), get_origin(url).into()));
+
+        if self.options.print_headers {
+            eprintln!("WebSocket upgrade request");
+            eprintln!("---");
+            eprintln!("{}", req);
+        }
+
         Ok(req)
+    }
+
+    fn on_response(&mut self, res: &Response) -> WsResult<()> {
+        if self.options.print_headers {
+            eprintln!("WebSocket upgrade response");
+            eprintln!("---");
+            eprintln!("{}", res);
+        }
+
+        Ok(())
     }
 
     fn on_open(&mut self, _: Handshake) -> WsResult<()> {

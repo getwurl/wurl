@@ -6,32 +6,24 @@ args:
         help: Adds headers to any HTTP request made
         takes_value: true
         value_name: header:value
+        number_of_values: 1
+        multiple: true
+        env: WSY_HEADER
     - head:
         short: I
         long: head
         help: Prints HTTP headers
-    - ping:
-        short: p
-        long: ping
-        help: Specifies an interval to send a ping to the server
-        takes_value: true
-        value_name: seconds
-    - ping_msg:
-        long: ping-msg
-        help: Specifies a message to send when pinging the server
     - login:
         short: l
         long: login
         help: URL to authenticate with before sending the WebSocket request
         takes_value: true
         value_name: url
-    - binary:
-        short: b
-        long: binary
-        help: Enables binary mode
+        env: WSY_LOGIN_URL
     - follow_redirect:
         long: follow-redirect
         help: Honour HTTP redirection when authenticating
+        env: WSY_FOLLOW_REDIRECT
     - echo:
         short: e
         long: echo
@@ -42,12 +34,14 @@ args:
         multiple: true
         help: Sets the level of verbosity
     - profile:
-        short: P
-        long: profile
+        short: c
+        long: config
         value_name: file
-        help: Use a configuration profile
+        help: Use a configuration file
         takes_value: true
+        env: WSY_PROFILE
     - URL:
         help: URL of the server to connect to
         required: false
         index: 1
+        env: WSY_URL

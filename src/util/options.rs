@@ -32,24 +32,6 @@ pub struct Options {
 
     /// Headers
     pub headers: Vec<String>,
-
-    /// Messages to send after connecting to the server
-    pub messages: Vec<String>,
-
-    /// If provided, will specify an interval for wsta to send a ping
-    /// frame to the server.
-    pub ping_interval: Option<u64>,
-
-    /// The string to send to the server when sending a ping frame.
-    pub ping_msg: String,
-
-    /// If provided, will turn the program into a binary mode, reading 255 bytes
-    /// at a time and sending frames when the buffer is filled
-    pub binary_mode: bool,
-
-    /// Specifies the amount of bytes per frame to send when
-    /// sending binary data.
-    pub binary_frame_size: String,
 }
 
 impl Default for Options {
@@ -62,11 +44,6 @@ impl Default for Options {
             verbosity: 0,
             print_headers: false,
             headers: Vec::new(),
-            messages: Vec::new(),
-            ping_interval: None,
-            ping_msg: String::from("ping"),
-            binary_mode: false,
-            binary_frame_size: String::from("256"),
         }
     }
 }
@@ -82,11 +59,6 @@ impl Options {
             verbosity: 0,
             print_headers: false,
             headers: Vec::new(),
-            messages: Vec::new(),
-            ping_interval: None,
-            ping_msg: String::from("ping"),
-            binary_mode: false,
-            binary_frame_size: String::from("256"),
         }
     }
 }
