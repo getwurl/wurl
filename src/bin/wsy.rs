@@ -28,6 +28,10 @@ fn main() {
     opts.verbosity = matches.occurrences_of("verbose") as u8;
     opts.print_headers = matches.is_present("head");
 
+    if let Ok(headers) = values_t!(matches, "headers", String) {
+        opts.headers = headers;
+    }
+
     if opts.url.is_empty() {
         app.print_help().expect("Failed to print help message");
         exit(1);

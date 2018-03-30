@@ -1,6 +1,6 @@
 name: wsy
 args:
-    - header:
+    - headers:
         short: H
         long: header
         help: Adds headers to any HTTP request made

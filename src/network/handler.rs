@@ -18,6 +18,8 @@ impl Handler for Client {
         req.headers_mut()
             .push(("Origin".into(), get_origin(url).into()));
 
+        add_headers(req.headers_mut(), &self.options.headers);
+
         if self.options.print_headers {
             eprintln!("WebSocket upgrade request");
             eprintln!("---");
@@ -84,4 +86,13 @@ fn get_origin(url: &Url) -> String {
     };
 
     format!("{}://{}", scheme, url.host_str().unwrap_or(""))
+}
+
+fn add_headers(request_headers: &mut Vec<(String, Vec<u8>)>, input_headers: &Vec<String>) {
+    for header in input_headers {
+        let split: Vec<&str> = header.split(':').collect();
+        let key = split.first().unwrap().trim();
+        let value = split.last().unwrap().trim();
+        request_headers.push((key.to_owned().into(), value.to_owned().into()));
+    }
 }
