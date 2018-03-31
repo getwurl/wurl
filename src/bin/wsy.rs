@@ -4,12 +4,17 @@ extern crate clap;
 extern crate log;
 extern crate rprompt;
 extern crate stderrlog;
+extern crate ws;
 extern crate wsy;
 
+mod messages;
+
+use messages::{parse_message, Kind};
 use std::process::exit;
 use std::thread::sleep;
 use std::time::Duration;
 use rprompt::read_reply;
+use ws::CloseCode;
 use wsy::util::options::Options;
 use wsy::network::ws::connect;
 use clap::App;
@@ -31,7 +36,6 @@ fn main() {
         opts.url = url;
     }
 
-
     if let Ok(headers) = values_t!(matches, "headers", String) {
         opts.headers = headers;
     }
@@ -50,36 +54,45 @@ fn main() {
 
     info!("Parsed options as: {:?}", opts);
 
-    let sender = match connect(opts) {
-        Ok(result) => result,
-        Err(error) => {
-            eprintln!("Failed to connect to WebSocket server: {}", error);
-            exit(1);
-        }
-    };
+    let sender = connect(opts).unwrap_or_else(|error| {
+        eprintln!("Failed to connect to WebSocket server: {}", error);
+        exit(1);
+    });
 
     loop {
         match read_reply() {
             Ok(input) => {
-                if !input.trim().is_empty() {
-                    sender
-                        .send(input)
-                        .expect("Failed to send WebSocket message");
+                let message = parse_message(input);
+                match message.kind {
+                    Kind::Message => sender
+                        .send(message.message.expect("Message did not contain a message"))
+                        .expect("Failed to send WebSocket message"),
+                    Kind::Ping => sender
+                        .ping(Vec::new())
+                        .expect("Failed to send ping message"),
+                    Kind::Pong => sender
+                        .pong(Vec::new())
+                        .expect("Failed to send ping message"),
+                    Kind::Close => sender
+                        .close(CloseCode::from(
+                            message
+                                .code
+                                .expect("Close control frame did not containt a cause code"),
+                        ))
+                        .expect("Failed to send ping message"),
                 }
             }
-            Err(error) => {
-                match error.kind() {
-                    std::io::ErrorKind::UnexpectedEof => {
-                        trace!("Encounteded EOF in stdin, sleeping");
-                        sleep(Duration::from_secs(1));
-                    }
-                    _ => {
-                        warn!("Error: {:?}", error);
-                        eprintln!("error: {}", error);
-                        exit(2);
-                    }
+            Err(error) => match error.kind() {
+                std::io::ErrorKind::UnexpectedEof => {
+                    trace!("Encounteded EOF in stdin, sleeping");
+                    sleep(Duration::from_secs(1));
                 }
-            }
+                _ => {
+                    warn!("Error: {:?}", error);
+                    eprintln!("error: {}", error);
+                    exit(2);
+                }
+            },
         }
     }
 }
