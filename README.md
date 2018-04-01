@@ -34,6 +34,9 @@ will be:
 - `/close <code>` - Sends a close code to the server
 - `/close <code> <msg>` - Sends a close code with a given message to the server
 
+If you need to send a frame which contains a leading slash like the above
+commands, add a leading space to escape it. For example ` /foobar`.
+
 
 ## Distribution
 First party distribution:

@@ -13,6 +13,7 @@ use messages::{parse_message, Kind};
 use std::process::exit;
 use std::thread::sleep;
 use std::time::Duration;
+use std::error::Error;
 use rprompt::read_reply;
 use ws::CloseCode;
 use wsy::util::options::Options;
@@ -63,6 +64,15 @@ fn main() {
         match read_reply() {
             Ok(input) => {
                 let message = parse_message(input);
+                trace!("Message: {:?}", message);
+
+                if let Err(error) = message {
+                    eprintln!("Error: {:?}", error.description());
+                    continue;
+                }
+
+                let message = message.unwrap();
+
                 match message.kind {
                     Kind::Message => sender
                         .send(message.message.expect("Message did not contain a message"))
