@@ -1,7 +1,19 @@
 language: rust
+sudo: required
+services: docker
+
 before_script:
   - rustup component add rustfmt-preview
+
 script:
   - cargo fmt --all -- --write-mode=diff
   - cargo build
   - cargo test
+  - docker build -t "$DOCKER_USERNAME/$DOCKER_REPONAME" .
+  - docker run -it "$DOCKER_USERNAME/$DOCKER_REPONAME" --help
+
+deploy:
+  provider: script
+  script: bash scripts/docker_push.sh
+  on:
+    branch: master
