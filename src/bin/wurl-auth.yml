@@ -1,0 +1,20 @@
+name: wsy-auth
+args:
+    - headers:
+        short: H
+        long: header
+        help: Adds headers to any HTTP request made
+        takes_value: true
+        value_name: header:value
+        number_of_values: 1
+        multiple: true
+    - head:
+        short: I
+        long: head
+        help: Prints HTTP headers
+    - url:
+        help: URL of the server to connect to
+        required: true
+        index: 1
+        value_name: URL
+        env: WSY_URL

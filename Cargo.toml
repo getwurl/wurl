@@ -14,6 +14,12 @@ name = "wsy"
 path = "src/bin/wsy.rs"
 required-features = ["cli"]
 
+[[bin]]
+doc = false
+name = "wurl-auth"
+path = "src/bin/wurl-auth.rs"
+required-features = ["http", "cli"]
+
 [dependencies]
 url = "1.7.0"
 log = "0.4.1"
@@ -35,6 +41,23 @@ version = "1.0.3"
 optional = true
 version = "0.3.0"
 
+[dependencies.futures]
+optional = true
+version = "0.1"
+
+[dependencies.hyper]
+optional = true
+version = "0.11"
+
+[dependencies.hyper-tls]
+optional = true
+version = "0.1.3"
+
+[dependencies.tokio-core]
+optional = true
+version = "0.1"
+
 [features]
 default = ["cli"]
 cli = ["clap", "rprompt", "stderrlog"]
+http = ["futures", "hyper", "hyper-tls", "tokio-core"]
