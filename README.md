@@ -1,15 +1,18 @@
-# wsta 2
+# wurl - WebSocket curl
 
-Ground up rewrite of [wsta][wsta]. Heavy work in progress. Working name is wurl,
-but is subject to change (please suggest more names!).
+> The WebSocket CLI for developers
 
-[![Build Status](https://travis-ci.org/esphen/wsta2.svg?branch=master)](https://travis-ci.org/esphen/wsta2)
+wurl (pronounced _'whirl'_) is a ground up rewrite of [wsta][wsta]. Heavy work
+in progress. The working name is wurl, but is subject to change (please suggest
+more names in [#3][suggest_names]!).
+
+[![Build Status](https://travis-ci.org/esphen/wurl.svg?branch=master)](https://travis-ci.org/esphen/wurl)
 
 ## wurl vs wsta
 ### Pros
 - Ground up rewrite using a modern rust toolchain and libraries
-- (Should be) Much faster and handle higher throughput due to new async, event
-  driven architecture and no locking
+- (Should be) Much faster and handle higher throughput due to the new async,
+  event driven architecture and no locking
 - Is now a library in addition to a CLI which makes it possible for rust
   programmers to programmatically control wurl
 - Supports control frames
@@ -18,9 +21,10 @@ but is subject to change (please suggest more names!).
 
 ### Cons
 - Does not support binary data. If this is requested enough, it may in the
-  future
+  future. Please see [this issue][binary_issue]
 - Does not have first party distribution through OS package managers. This will
-  have to be done by volunteers
+  have to be done by volunteers. (Pst, want to
+  [be a packager?](#other-distribution-systems))
 
 ## Control frames
 
@@ -79,4 +83,6 @@ so, please make a [pull request][pull_request] to add it to the list above.
 [wsta]: https://github.com/esphen/wsta/
 [crates.io]: https://crates.io
 [docker]: https://store.docker.com/community/images/esphen/wurl
-[pull_request]: https://github.com/esphen/wsta2/issues/new?title=New%20package:%20%3CInsert%20OS%20or%20package%20here%3E&labels=packages
+[binary_issue]: https://github.com/esphen/wurl/issues/4
+[suggest_names]: https://github.com/esphen/wurl/issues/3
+[pull_request]: https://github.com/esphen/wurl/issues/new?title=New%20package:%20%3CInsert%20OS%20or%20package%20here%3E&labels=packages
