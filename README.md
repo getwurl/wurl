@@ -2,11 +2,17 @@
 
 > The WebSocket CLI for developers
 
-wurl (pronounced _'whirl'_) is a ground up rewrite of [wsta][wsta]. Heavy work
-in progress. The working name is wurl, but is subject to change (please suggest
-more names in [#3][suggest_names]!).
-
 [![Build Status](https://travis-ci.org/esphen/wurl.svg?branch=master)](https://travis-ci.org/esphen/wurl)
+
+WebSockets can be hard to work with due to their stateful nature. It is not
+really feasible to just open a websocket in a web browser like you can with
+a RESTful API, so tools are needed. wurl (pronounced _'whirl'_) is that tool.
+
+It is a ground up rewrite of [wsta][wsta]. Heavy work in progress. The working
+name is wurl, but is subject to change (please suggest more names in
+[#3][suggest_names]!).
+
+![Example of usage](assets/example.gif)
 
 ## wurl vs wsta
 ### Pros
