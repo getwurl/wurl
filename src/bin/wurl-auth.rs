@@ -32,7 +32,7 @@ fn main() {
             }
 
             print!("Cookie: {}", cookie_values.join("; "));
-        },
+        }
         Err(error) => eprintln!("An error occured while fetching: {}", error),
     }
 }
