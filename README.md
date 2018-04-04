@@ -1,4 +1,8 @@
-# [![wurl](assets/logo.png)](https://github.com/esphen/wurl)
+<h1 align="center">
+  <a href="https://github.com/esphen/wurl">
+    <img src="assets/logo.png" alt="wurl" />
+  </a>
+</h1>
 
 > The WebSocket CLI for developers
 
