@@ -1,17 +1,17 @@
 [package]
-name = "wsy"
+name = "wurl"
 description = "WebSockets CLI for developers"
 version = "0.1.0"
-authors = ["Espen Henriksen <dev+wsy@henriksen.is>"]
+authors = ["Espen Henriksen <dev+wurl@henriksen.is>"]
 keywords = ["websocket", "ws", "cli", "devtool"]
 license = "GPL-3.0"
-repository = "https://github.com/esphen/wsy"
+repository = "https://github.com/esphen/wurl"
 readme = "README.md"
 
 [[bin]]
 doc = false
-name = "wsy"
-path = "src/bin/wsy.rs"
+name = "wurl"
+path = "src/bin/wurl.rs"
 required-features = ["cli"]
 
 [[bin]]

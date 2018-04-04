@@ -1,4 +1,4 @@
-name: wsy-auth
+name: wurl-auth
 args:
     - headers:
         short: H
@@ -17,4 +17,4 @@ args:
         required: true
         index: 1
         value_name: URL
-        env: WSY_URL
+        env: WURL_URL

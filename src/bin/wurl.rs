@@ -5,7 +5,7 @@ extern crate log;
 extern crate rprompt;
 extern crate stderrlog;
 extern crate ws;
-extern crate wsy;
+extern crate wurl;
 
 mod messages;
 
@@ -16,8 +16,8 @@ use std::time::Duration;
 use std::error::Error;
 use rprompt::read_reply;
 use ws::CloseCode;
-use wsy::util::options::Options;
-use wsy::network::ws::connect;
+use wurl::util::options::Options;
+use wurl::network::ws::connect;
 use clap::App;
 
 fn main() {

@@ -1,4 +1,4 @@
-name: wsy
+name: wurl
 args:
     - headers:
         short: H
@@ -8,7 +8,7 @@ args:
         value_name: header:value
         number_of_values: 1
         multiple: true
-        env: WSY_HEADER
+        env: WURL_HEADER
     - head:
         short: I
         long: head
@@ -19,11 +19,11 @@ args:
         help: URL to authenticate with before sending the WebSocket request
         takes_value: true
         value_name: url
-        env: WSY_LOGIN_URL
+        env: WURL_LOGIN_URL
     - follow_redirect:
         long: follow-redirect
         help: Honour HTTP redirection when authenticating
-        env: WSY_FOLLOW_REDIRECT
+        env: WURL_FOLLOW_REDIRECT
     - echo:
         short: e
         long: echo
