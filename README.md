@@ -1,4 +1,4 @@
-# wurl - WebSocket curl
+# [![wurl](assets/logo.png)](https://github.com/esphen/wurl)
 
 > The WebSocket CLI for developers
 
