@@ -30,10 +30,12 @@ fn main() {
     let matches = app.clone().get_matches();
     let mut opts = Options::default();
 
-    opts.verbosity = matches.occurrences_of("verbose") as u8;
-    opts.silent = matches.is_present("silent");
+    opts.echo = matches.is_present("echo");
     opts.print_headers = matches.is_present("head");
     opts.show_control_frames = matches.is_present("show_control_frames");
+    opts.silent = matches.is_present("silent");
+    opts.verbosity = matches.occurrences_of("verbose") as u8;
+
     if let Ok(url) = value_t!(matches, "url", String) {
         opts.url = url;
     }
