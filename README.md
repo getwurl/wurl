@@ -1,12 +1,12 @@
 <h1 align="center">
-  <a href="https://github.com/esphen/wurl">
+  <a href="https://github.com/getwurl/wurl">
     <img src="assets/logo.png" alt="wurl" />
   </a>
 </h1>
 
 > The WebSocket CLI for developers
 
-[![Build Status](https://travis-ci.org/esphen/wurl.svg?branch=master)](https://travis-ci.org/esphen/wurl)
+[![Build Status](https://travis-ci.org/getwurl/wurl.svg?branch=master)](https://travis-ci.org/getwurl/wurl)
 
 WebSockets can be hard to work with due to their stateful nature. It is not
 really feasible to just open a websocket in a web browser like you can with
@@ -18,28 +18,22 @@ name is wurl, but is subject to change (please suggest more names in
 
 ![Example of usage](assets/example.gif)
 
-## wurl vs wsta
-### Pros
-- Ground up rewrite using a modern rust toolchain and libraries
-- (Should be) Much faster and handle higher throughput due to the new async,
-  event driven architecture and no locking
-- Is now a library in addition to a CLI which makes it possible for rust
-  programmers to programmatically control wurl
-- Supports control frames
-- Follows the unix philosophy, and is just as pipe-friendly as wsta
-- Supports musl-based OSes via first-party distributed docker image
+## Contents
 
-### Cons
-- Does not support binary data. If this is requested enough, it may in the
-  future. Please see [this issue][binary_issue]
-- Does not have first party distribution through OS package managers. This will
-  have to be done by volunteers. (Pst, want to
-  [be a packager?](#other-distribution-systems))
+- [Usage](#usage)
+- [Control Frames](#control-frames)
+- [Plugins](#plugins)
+- [Wurl vs wsta](#wurl-vs-wsta)
+- [Install](#install)
+
+## Usage
+
+TODO
 
 ## Control frames
 
-It will be supported to send control frames to the server using commands. These
-will be:
+It will be supported to send control frames to the server using commands. The
+currently available commands are:
 
 - `/ping` - Sends a ping frame
 - `/ping <message>` - Sends a ping frame with the given message
@@ -49,10 +43,44 @@ will be:
 - `/close <code> <msg>` - Sends a close code with a given message to the server
 
 If you need to send a frame which contains a leading slash like the above
-commands, add a leading space to escape it. For example ` /foobar`.
+commands, add a leading space to escape it.
 
+## Plugins
 
-## Distribution
+The main wurl executable is intentionally kept tiny. Many other programs
+integrate well `wurl`, and some provide features you may need. Here are some
+that are designed to work well with `wurl`.
+
+* [wurl-auth][wurl_auth] - Set authentication headers
+* [wurl-tools][wurl_tools_issue] - (Coming soon) Automate sending of messages
+
+_Feel free to add to this list if you created something cool._
+
+## wurl vs wsta
+### Pros
+- Ground up rewrite using a modern rust toolchain and libraries
+- (Should be) Much faster and handle higher throughput due to the new async,
+  event driven architecture and no locking
+- Is now a library in addition to a CLI which makes it possible for rust
+  programmers to programmatically control wurl
+- Supports control frames
+- Follows the unix philosophy, and is just as pipe-friendly as wsta
+- Supports musl-based OSes (like alpine linux)
+- Supports LibreSSL-based OSes??
+- OSes via first-party distributed docker image
+
+### Cons
+- Does not support binary data. If this is requested enough, it may in the
+  future. Please see [this issue][binary_issue]
+- Does not have periodic pinging built in. Support for this will come at a
+  [later time][wurl_tools_issue]
+- No man pages (yet)
+- Does not have first party distribution through OS package managers. The system
+  used by wsta was not satisfactory, and will not be used again. Packaging will
+  have to be done by volunteers. (Pst, want to
+  [be a packager?](#other-distribution-systems))
+
+## Install
 First party distribution:
 - [crates.io](#cratesio)
 - [docker](#docker)
@@ -61,6 +89,8 @@ Third party distibution:
 - None yet
 
 ### [crates.io][crates.io]
+
+> NOT YET PUBLISHED
 
     $ cargo install wurl
 
@@ -92,7 +122,9 @@ so, please make a [pull request][pull_request] to add it to the list above.
 
 [wsta]: https://github.com/esphen/wsta/
 [crates.io]: https://crates.io
-[docker]: https://store.docker.com/community/images/esphen/wurl
-[binary_issue]: https://github.com/esphen/wurl/issues/4
-[suggest_names]: https://github.com/esphen/wurl/issues/3
-[pull_request]: https://github.com/esphen/wurl/issues/new?title=New%20package:%20%3CInsert%20OS%20or%20package%20here%3E&labels=packages
+[docker]: https://store.docker.com/community/images/getwurl/wurl
+[binary_issue]: https://github.com/getwurl/wurl/issues/4
+[wurl_auth]: https://github.com/getwurl/wurl-auth
+[wurl_tools_issue]: https://github.com/getwurl/wurl/issues/4
+[suggest_names]: https://github.com/getwurl/wurl/issues/3
+[pull_request]: https://github.com/getwurl/wurl/issues/new?title=New%20package:%20%3CInsert%20OS%20or%20package%20here%3E&labels=packages
