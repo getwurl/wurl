@@ -2,6 +2,8 @@
 #![deny(missing_debug_implementations)]
 
 extern crate url;
+#[macro_use]
+extern crate log;
 extern crate ws;
 
 pub mod network;

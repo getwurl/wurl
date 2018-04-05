@@ -1,5 +1,6 @@
 use std::result::Result;
 use std::process::exit;
+use std::str::from_utf8;
 use util::options::Options;
 use url::Url;
 use ws::{CloseCode, Error as WsError, Frame, Handler, Handshake, OpCode, Request, Response,
@@ -72,10 +73,31 @@ impl Handler for Client {
             }
             OpCode::Close => {
                 if self.options.show_control_frames {
-                    println!(
-                        "[pong] {}",
-                        String::from_utf8(frame.payload().to_vec()).unwrap()
+                    let close_code = &frame.payload()[..2];
+                    let raw_code: u16 =
+                        (u16::from(close_code[0]) << 8) | (u16::from(close_code[1]));
+                    let named = CloseCode::from(raw_code);
+
+                    trace!(
+                        "Connection received raw close code: {:?}, {:?}",
+                        raw_code,
+                        close_code
                     );
+
+                    if let Ok(reason) = from_utf8(&frame.payload()[2..]) {
+                        println!(
+                            "[close] {:?} ({}) {}",
+                            named,
+                            raw_code,
+                            reason,
+                        );
+                    } else {
+                        println!(
+                            "[close] {:?} ({})",
+                            named,
+                            raw_code,
+                        );
+                    }
                 }
             }
             _ => {}
