@@ -12,9 +12,8 @@ WebSockets can be hard to work with due to their stateful nature. It is not
 really feasible to just open a websocket in a web browser like you can with
 a RESTful API, so tools are needed. wurl (pronounced _'whirl'_) is that tool.
 
-It is a ground up rewrite of [wsta][wsta]. Heavy work in progress. The working
-name is wurl, but is subject to change (please suggest more names in
-[#3][suggest_names]!).
+It is a ground up rewrite of [wsta][wsta]. Still heavy work in progress, but
+usable.
 
 ![Example of usage](assets/example.gif)
 
@@ -125,6 +124,5 @@ so, please make a [pull request][pull_request] to add it to the list above.
 [docker]: https://store.docker.com/community/images/getwurl/wurl
 [binary_issue]: https://github.com/getwurl/wurl/issues/4
 [wurl_auth]: https://github.com/getwurl/wurl-auth
-[wurl_tools_issue]: https://github.com/getwurl/wurl/issues/4
-[suggest_names]: https://github.com/getwurl/wurl/issues/3
+[wurl_tools_issue]: https://github.com/getwurl/wurl/issues/5
 [pull_request]: https://github.com/getwurl/wurl/issues/new?title=New%20package:%20%3CInsert%20OS%20or%20package%20here%3E&labels=packages
