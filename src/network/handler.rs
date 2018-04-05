@@ -2,7 +2,7 @@ use std::result::Result;
 use std::process::exit;
 use util::options::Options;
 use url::Url;
-use ws::{CloseCode, Error as WsError, Handler, Handshake, Message, Request, Response,
+use ws::{CloseCode, Error as WsError, Frame, Handler, Handshake, OpCode, Request, Response,
          Result as WsResult, Sender};
 
 pub struct Client {
@@ -44,9 +44,44 @@ impl Handler for Client {
         Ok(())
     }
 
-    fn on_message(&mut self, msg: Message) -> WsResult<()> {
-        println!("{}", msg);
-        Ok(())
+    fn on_frame(&mut self, frame: Frame) -> WsResult<Option<Frame>> {
+        match frame.opcode() {
+            OpCode::Text => {
+                println!("{}", String::from_utf8(frame.payload().to_vec()).unwrap());
+            }
+            OpCode::Binary => {
+                if !self.options.silent {
+                    eprintln!("Recieved a binary frame, but this is not supported. See https://github.com/getwurl/wurl/issues/4");
+                }
+            }
+            OpCode::Ping => {
+                if self.options.show_control_frames {
+                    println!(
+                        "[ping] {}",
+                        String::from_utf8(frame.payload().to_vec()).unwrap()
+                    );
+                }
+            }
+            OpCode::Pong => {
+                if self.options.show_control_frames {
+                    println!(
+                        "[pong] {}",
+                        String::from_utf8(frame.payload().to_vec()).unwrap()
+                    );
+                }
+            }
+            OpCode::Close => {
+                if self.options.show_control_frames {
+                    println!(
+                        "[pong] {}",
+                        String::from_utf8(frame.payload().to_vec()).unwrap()
+                    );
+                }
+            }
+            _ => {}
+        };
+
+        Ok(Some(frame))
     }
 
     fn on_error(&mut self, err: WsError) {

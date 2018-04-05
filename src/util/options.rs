@@ -13,18 +13,13 @@ pub struct Options {
     pub verbosity: u8,
 
     /// Supresses all output except incoming frames
-    pub quiet: bool,
+    pub silent: bool,
 
     /// The WebSocket URL to connect to.
     pub url: String,
 
-    /// Optional: A GET URL to authenticate with before connecting
-    /// to the main url.
-    pub login_url: String,
-
-    /// When passed, this flag will cause the program to follow
-    /// HTTP GET redirection encountered when calling login_url.
-    pub follow_redirect: bool,
+    /// Will echo control frames if present
+    pub show_control_frames: bool,
 
     /// Echo outgoing frames, as well as the incoming frames. Outgoing
     /// frames will be prefixed with ">".
@@ -41,11 +36,10 @@ impl Default for Options {
     fn default() -> Options {
         Options {
             url: String::new(),
-            login_url: String::new(),
-            follow_redirect: false,
+            show_control_frames: false,
             echo: false,
             verbosity: 0,
-            quiet: false,
+            silent: false,
             print_headers: false,
             headers: Vec::new(),
         }
@@ -57,11 +51,10 @@ impl Options {
     pub fn nothing() -> Options {
         Options {
             url: String::new(),
-            login_url: String::new(),
-            follow_redirect: false,
+            show_control_frames: false,
             echo: false,
             verbosity: 0,
-            quiet: false,
+            silent: false,
             print_headers: false,
             headers: Vec::new(),
         }

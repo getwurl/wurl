@@ -13,17 +13,10 @@ args:
         short: I
         long: head
         help: Prints HTTP headers
-    - login:
-        short: l
-        long: login
-        help: URL to authenticate with before sending the WebSocket request
-        takes_value: true
-        value_name: url
-        env: WURL_LOGIN_URL
-    - follow_redirect:
-        long: follow-redirect
-        help: Honour HTTP redirection when authenticating
-        env: WURL_FOLLOW_REDIRECT
+    - show_control_frames:
+        short: C
+        long: show-control-frames
+        help: Enables echoing of outgoing frames
     - echo:
         short: e
         long: echo
@@ -33,17 +26,10 @@ args:
         long: verbose
         multiple: true
         help: Increments verbosity by one (up to four)
-    - quiet:
-        short: q
-        long: quiet
+    - silent:
+        short: s
+        long: silent
         help: Supresses all output except incoming frames
-    - profile:
-        short: c
-        long: config
-        value_name: file
-        help: Use a configuration file
-        takes_value: true
-        env: WSY_PROFILE
     - url:
         help: URL of the server to connect to
         required: false
