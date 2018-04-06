@@ -22,7 +22,7 @@ fn main() {
             eprintln!(
                 "OUT_DIR environment variable not defined. \
                  Please file a bug: \
-                 https://github.com/BurntSushi/ripgrep/issues/new"
+                 https://github.com/esphen/wurl/issues/new"
             );
             process::exit(1);
         }
@@ -30,7 +30,7 @@ fn main() {
     /*
     fs::create_dir_all(&outdir).unwrap();
 
-    let stamp_path = Path::new(&outdir).join("ripgrep-stamp");
+    let stamp_path = Path::new(&outdir).join("wurl-stamp");
     if let Err(err) = File::create(&stamp_path) {
         panic!("failed to write {}: {}", stamp_path.display(), err);
     }
@@ -117,7 +117,7 @@ fn formatted_options() -> io::Result<String> {
         if arg.hidden {
             continue;
         }
-        // ripgrep only has two positional arguments, and probably will only
+        // wurl only has two positional arguments, and probably will only
         // ever have two positional arguments, so we just hardcode them into
         // the template.
         if let app::RGArgKind::Positional{..} = arg.kind {

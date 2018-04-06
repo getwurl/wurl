@@ -69,7 +69,7 @@ pub fn long_version(revision_hash: Option<&str>) -> String {
         features.push("-SSL");
     }
     // Do we have a git hash?
-    // (Yes, if ripgrep was built on a machine with `git` installed.)
+    // (Yes, if url was built on a machine with `git` installed.)
     let hash = match revision_hash.or(option_env!("WURL_BUILD_GIT_HASH")) {
         None => String::new(),
         Some(githash) => format!(" (rev {})", githash),
