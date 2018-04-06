@@ -7,6 +7,7 @@ extern crate stderrlog;
 extern crate ws;
 extern crate wurl;
 
+mod app;
 mod messages;
 
 use messages::{parse_message, Kind};
@@ -16,17 +17,12 @@ use std::time::Duration;
 use std::error::Error;
 use rprompt::read_reply;
 use ws::CloseCode;
+use app::build_app;
 use wurl::util::options::Options;
 use wurl::network::ws::connect;
-use clap::App;
 
 fn main() {
-    let yaml = load_yaml!("cli.yml");
-    let mut app = App::from_yaml(yaml)
-        .name(crate_name!())
-        .version(crate_version!())
-        .author(crate_authors!())
-        .about(crate_description!());
+    let mut app = build_app();
     let matches = app.clone().get_matches();
     let mut opts = Options::default();
 
