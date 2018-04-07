@@ -27,7 +27,7 @@ fn main() {
     let mut opts = Options::default();
 
     opts.echo = matches.is_present("echo");
-    opts.print_headers = matches.is_present("head");
+    opts.print_headers = matches.is_present("include");
     opts.silent = matches.is_present("silent");
 
     if let Ok(show_control_frames) = value_t!(matches, "show_control_frames", Show) {

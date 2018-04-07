@@ -16,10 +16,10 @@ pub fn build_app() -> App<'static, 'static> {
                 .multiple(true),
         )
         .arg(
-            Arg::with_name("head")
-                .short("I")
-                .long("head")
-                .help("Prints HTTP headers"),
+            Arg::with_name("include")
+                .short("i")
+                .long("include")
+                .help("Include the HTTP headers in the output"),
         )
         .arg(
             Arg::with_name("show_control_frames")
