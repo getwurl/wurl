@@ -2,16 +2,23 @@
 use std::vec::Vec;
 use std::str::FromStr;
 
+/// An error that occurs when parsing of an option occurs
 #[derive(Clone, Debug)]
 pub struct OptionParseError {
+    /// The human-readable error message
     reason: String,
 }
 
+/// An enumeration for identifying the direction frames are headed.
 #[derive(Clone, Debug, PartialEq)]
 pub enum Show {
+    /// Does not match any headers
     None,
+    /// Matches both incoming and outgoing frames
     All,
+    /// Matches only incoming (ingress) frames
     Incoming,
+    /// Matches only outgoing (egress) frames
     Outgoing,
 }
 
