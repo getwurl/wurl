@@ -9,7 +9,7 @@ pub fn build_app() -> App<'static, 'static> {
             Arg::with_name("headers")
                 .short("H")
                 .long("header")
-                .help("Adds headers to any HTTP request made")
+                .help("Adds headers to the WebSocket HTTP handshake")
                 .takes_value(true)
                 .value_name("header:value")
                 .number_of_values(1)
@@ -24,7 +24,10 @@ pub fn build_app() -> App<'static, 'static> {
         .arg(
             Arg::with_name("show_control_frames")
                 .short("C")
-                .long("show-control-frames")
+                .long("control-frames")
+                .takes_value(true)
+                .value_name("type")
+                .possible_values(&["all", "in", "out"])
                 .help("Enables echoing of control frames"),
         )
         .arg(

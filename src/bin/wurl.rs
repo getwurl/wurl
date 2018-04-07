@@ -18,7 +18,7 @@ use std::error::Error;
 use rprompt::read_reply;
 use ws::CloseCode;
 use app::build_app;
-use wurl::util::options::Options;
+use wurl::util::options::{Options, Show};
 use wurl::network::ws::connect;
 
 fn main() {
@@ -28,9 +28,11 @@ fn main() {
 
     opts.echo = matches.is_present("echo");
     opts.print_headers = matches.is_present("head");
-    opts.show_control_frames = matches.is_present("show_control_frames");
     opts.silent = matches.is_present("silent");
-    opts.verbosity = matches.occurrences_of("verbose") as u8;
+
+    if let Ok(show_control_frames) = value_t!(matches, "show_control_frames", Show) {
+        opts.show_control_frames = show_control_frames;
+    }
 
     if let Ok(url) = value_t!(matches, "url", String) {
         opts.url = url;
@@ -48,7 +50,7 @@ fn main() {
     stderrlog::new()
         .module(module_path!())
         .quiet(opts.silent)
-        .verbosity(opts.verbosity as usize)
+        .verbosity(matches.occurrences_of("verbose") as usize)
         .init()
         .expect("Failed to instantiate logger");
 

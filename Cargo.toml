@@ -1,6 +1,6 @@
 [package]
 name = "wurl"
-description = "WebSockets CLI for developers"
+description = "WebSocket CLI for developers"
 version = "0.1.0"
 authors = ["Espen Henriksen <dev+wurl@henriksen.is>"]
 keywords = ["websocket", "ws", "cli", "devtool"]

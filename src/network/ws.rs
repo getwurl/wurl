@@ -7,6 +7,7 @@ use ws::{Error as WsError, ErrorKind, Sender, WebSocket};
 
 pub fn connect(options: Options) -> Result<Sender, WsError> {
     let url = options.url.clone();
+    trace!("Parsed URL as {:?}", url);
     let mut ws = WebSocket::new(move |out| Client {
         out: out,
         options: options.clone(),
@@ -18,6 +19,7 @@ pub fn connect(options: Options) -> Result<Sender, WsError> {
         )
     })?;
 
+    debug!("About to connect to {}", parsed);
     ws.connect(parsed)?;
     let sender = ws.broadcaster();
 

@@ -3,6 +3,7 @@ use std::process::exit;
 use std::str::from_utf8;
 use util::options::Options;
 use url::Url;
+use util::options::Show;
 use ws::{CloseCode, Error as WsError, Frame, Handler, Handshake, OpCode, Request, Response,
          Result as WsResult, Sender};
 
@@ -49,7 +50,10 @@ impl Handler for Client {
     }
 
     fn on_frame(&mut self, frame: Frame) -> WsResult<Option<Frame>> {
+        let show_control_frames = self.options.show_control_frames == Show::Incoming
+            || self.options.show_control_frames == Show::All;
         trace!("Recieved frame: {:?}", frame);
+        trace!("Show control frames? {:?}", show_control_frames);
 
         match frame.opcode() {
             OpCode::Text => {
@@ -61,7 +65,7 @@ impl Handler for Client {
                 }
             }
             OpCode::Ping => {
-                if self.options.show_control_frames {
+                if show_control_frames {
                     println!(
                         "[ping] {}",
                         String::from_utf8(frame.payload().to_vec()).unwrap()
@@ -69,7 +73,7 @@ impl Handler for Client {
                 }
             }
             OpCode::Pong => {
-                if self.options.show_control_frames {
+                if show_control_frames {
                     println!(
                         "[pong] {}",
                         String::from_utf8(frame.payload().to_vec()).unwrap()
@@ -77,7 +81,7 @@ impl Handler for Client {
                 }
             }
             OpCode::Close => {
-                if self.options.show_control_frames {
+                if show_control_frames {
                     let close_code = &frame.payload()[..2];
                     let raw_code: u16 =
                         (u16::from(close_code[0]) << 8) | (u16::from(close_code[1]));
@@ -103,7 +107,10 @@ impl Handler for Client {
     }
 
     fn on_send_frame(&mut self, frame: Frame) -> WsResult<Option<Frame>> {
+        let show_control_frames = self.options.show_control_frames == Show::Outgoing
+            || self.options.show_control_frames == Show::All;
         trace!("Sending frame: {:?}", frame);
+        trace!("Show control frames? {:?}", show_control_frames);
 
         match frame.opcode() {
             OpCode::Text => {
@@ -117,7 +124,7 @@ impl Handler for Client {
                 }
             }
             OpCode::Ping => {
-                if self.options.show_control_frames {
+                if show_control_frames {
                     println!(
                         "> [ping] {}",
                         String::from_utf8(frame.payload().to_vec()).unwrap()
@@ -125,7 +132,7 @@ impl Handler for Client {
                 }
             }
             OpCode::Pong => {
-                if self.options.show_control_frames {
+                if show_control_frames {
                     println!(
                         "> [pong] {}",
                         String::from_utf8(frame.payload().to_vec()).unwrap()
@@ -133,7 +140,7 @@ impl Handler for Client {
                 }
             }
             OpCode::Close => {
-                if self.options.show_control_frames {
+                if show_control_frames {
                     let close_code = &frame.payload()[..2];
                     let raw_code: u16 =
                         (u16::from(close_code[0]) << 8) | (u16::from(close_code[1]));
