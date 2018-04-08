@@ -1,19 +1,123 @@
-language: rust
-sudo: required
-services: docker
+#language: rust
+#sudo: required
+#services: docker
+#
+#
+#script:
+#  - cargo fmt --all -- --write-mode=diff
+#  - cargo build
+#  - cargo test
+#  - docker build -t "$DOCKER_USERNAME/$DOCKER_REPONAME" .
+#  - docker run -it "$DOCKER_USERNAME/$DOCKER_REPONAME" --help
+#
+#deploy:
+#  provider: script
+#  script: bash scripts/docker_push.sh
+#  on:
+#    branch: master
 
-before_script:
-  - rustup component add rustfmt-preview
+
+
+
+# Based on the "trust" template v0.1.2
+# https://github.com/japaric/trust/tree/v0.1.2
+
+dist: trusty
+language: rust
+services: docker
+sudo: required
+
+env:
+  global:
+    - CRATE_NAME=wurl
+
+matrix:
+  include:
+    # Linux
+    - env: TARGET=aarch64-unknown-linux-gnu
+    - env: TARGET=arm-unknown-linux-gnueabi
+    - env: TARGET=armv7-unknown-linux-gnueabihf
+    - env: TARGET=i686-unknown-linux-gnu
+    - env: TARGET=i686-unknown-linux-musl
+    - env: TARGET=mips-unknown-linux-gnu
+    - env: TARGET=mips64-unknown-linux-gnuabi64
+    - env: TARGET=mips64el-unknown-linux-gnuabi64
+    - env: TARGET=mipsel-unknown-linux-gnu
+    - env: TARGET=powerpc-unknown-linux-gnu
+    - env: TARGET=powerpc64-unknown-linux-gnu
+    - env: TARGET=powerpc64le-unknown-linux-gnu
+    - env: TARGET=s390x-unknown-linux-gnu DISABLE_TESTS=1
+    - env: TARGET=x86_64-unknown-linux-gnu
+    - env: TARGET=x86_64-unknown-linux-musl
+
+    # OSX
+    - env: TARGET=i686-apple-darwin
+      os: osx
+    - env: TARGET=x86_64-apple-darwin
+      os: osx
+
+    # *BSD
+    - env: TARGET=i686-unknown-freebsd DISABLE_TESTS=1
+    - env: TARGET=x86_64-unknown-freebsd DISABLE_TESTS=1
+    - env: TARGET=x86_64-unknown-netbsd DISABLE_TESTS=1
+
+    # Windows
+    - env: TARGET=x86_64-pc-windows-gnu
+
+    # Testing other channels
+    - env: TARGET=x86_64-unknown-linux-gnu
+      rust: nightly
+    - env: TARGET=x86_64-apple-darwin
+      os: osx
+      rust: nightly
+
+before_install:
+  - set -e
+  - rustup self update
+
+install:
+  - sh ci/install.sh
+  - source ~/.cargo/env || true
 
 script:
   - cargo fmt --all -- --write-mode=diff
-  - cargo build
-  - cargo test
-  - docker build -t "$DOCKER_USERNAME/$DOCKER_REPONAME" .
-  - docker run -it "$DOCKER_USERNAME/$DOCKER_REPONAME" --help
+  - bash ci/script.sh
+
+after_script: set +e
+
+before_deploy:
+  - sh ci/before_deploy.sh
 
 deploy:
-  provider: script
-  script: bash scripts/docker_push.sh
+  api_key:
+    secure: ujZ+NwHHfOoaegmfoCqNUZnLQoXQESTDjlboT3qr1Bq23GSWq+mjyzxAameP95rqm8lPjmTc3LGba0mp8zGWi8cMHhppLViNzErPTai1y2LmjV7Me+APP+h/zmOGU+MvjBhYjsItUdqDvFKSu/XHQb+UGGpy0N9GhCrZij1fnO4z5b9yFEFvX4Eu1lgAGx97fpME7VqGFUODL2TurDJLoaY8YFDFEPVkJy4NAmMFYRMgxp1krx1kp4GuluQe4HHIBanTTh4+34I5c/GUQcct1KwklYY6MPfG5pWrPzoajuhjlIrZBdBhVTfZgqv6tJUr6M1tvNvZoSsZ3nihIg+MFRvFonhl7ePywKUxaE4+hW2nl7X8V0Xvfwohfwo8+ZxKQBrjs4ytxBB2XmlRzObu4WVtLC0MBzjlMN7nLCKQTVPv4m9H61IWdXHmecckFRzfsYhFDCfJdJeVTi6FqQiOI4astku/maMq7N0aE9pro+h4RbZ3m+l5Ov7+vb/oAIjUFoTuf6DfdIc53qaHctSNQQatQoHldTVEgmcUOYPqWKiIhkeR2c0oWQeT5SJa9me4EsxQddyUOeYpXfcK+dIKdjGK+jPfyYc5c84iKO2zH+JL8pwEQYeLjRHhxFsXGrI576Hw/iy34pcS5tS+rZbSm3svgVNYeFhIn5L3dfbqjmQ=
+  file_glob: true
+  file: $CRATE_NAME-$TRAVIS_TAG-$TARGET.*
   on:
-    branch: master
+    # TODO Here you can pick which targets will generate binary releases
+    # In this example, there are some targets that are tested using the stable
+    # and nightly channels. This condition makes sure there is only one release
+    # for such targets and that's generated using the stable channel
+    condition: $TRAVIS_RUST_VERSION = stable
+    tags: true
+  provider: releases
+  skip_cleanup: true
+
+after_deploy:
+  - bash ci/docker_push.sh
+
+cache: cargo
+before_cache:
+  # Travis can't cache files that are not readable by "others"
+  - chmod -R a+r $HOME/.cargo
+
+branches:
+  only:
+    # release tags
+    - /^v\d+\.\d+\.\d+.*$/
+    - master
+
+notifications:
+  email:
+    on_success: never
+

@@ -51,7 +51,7 @@ integrate well `wurl`, and some provide features you may need. Here are some
 that are designed to work well with `wurl`.
 
 * [wurl-auth][wurl_auth] - Set authentication headers
-* [wurl-tools][wurl_tools_issue] - (Coming soon) Automate sending of messages
+* [wurl-tools][wurl_tools] - Easily automate sending of messages
 
 _Feel free to add to this list if you created something cool._
 
@@ -71,8 +71,6 @@ _Feel free to add to this list if you created something cool._
 ### Cons
 - Does not support binary data. If this is requested enough, it may in the
   future. Please see [this issue][binary_issue]
-- Does not have periodic pinging built in. Support for this will come at a
-  [later time][wurl_tools_issue]
 - No man pages (yet)
 - Does not have first party distribution through OS package managers. The system
   used by wsta was not satisfactory, and will not be used again. Packaging will
@@ -82,6 +80,7 @@ _Feel free to add to this list if you created something cool._
 ## Install
 First party distribution:
 - [crates.io](#cratesio)
+- [binaries](#binaries)
 - [docker](#docker)
 
 Third party distibution:
@@ -99,6 +98,10 @@ To update to a newer version, simply overwrite the old executable when
 installing.
 
     $ cargo install --force wurl
+
+### [binaries][binaries]
+
+All tagged releases on GitHub have compiled binaries attached to them.
 
 ### [docker][docker]
 
@@ -121,8 +124,9 @@ so, please make a [pull request][pull_request] to add it to the list above.
 
 [wsta]: https://github.com/esphen/wsta/
 [crates.io]: https://crates.io
+[binaries]: https://github.com/getwurl/wurl/releases
 [docker]: https://store.docker.com/community/images/getwurl/wurl
 [binary_issue]: https://github.com/getwurl/wurl/issues/4
 [wurl_auth]: https://github.com/getwurl/wurl-auth
-[wurl_tools_issue]: https://github.com/getwurl/wurl/issues/5
+[wurl_tools]: https://github.com/getwurl/wurl-tools
 [pull_request]: https://github.com/getwurl/wurl/issues/new?title=New%20package:%20%3CInsert%20OS%20or%20package%20here%3E&labels=packages
