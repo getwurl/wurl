@@ -80,7 +80,6 @@ install:
   - source ~/.cargo/env || true
 
 script:
-  - cargo fmt --all -- --write-mode=diff
   - bash ci/script.sh
 
 after_script: set +e
@@ -89,19 +88,24 @@ before_deploy:
   - sh ci/before_deploy.sh
 
 deploy:
-  api_key:
-    secure: ujZ+NwHHfOoaegmfoCqNUZnLQoXQESTDjlboT3qr1Bq23GSWq+mjyzxAameP95rqm8lPjmTc3LGba0mp8zGWi8cMHhppLViNzErPTai1y2LmjV7Me+APP+h/zmOGU+MvjBhYjsItUdqDvFKSu/XHQb+UGGpy0N9GhCrZij1fnO4z5b9yFEFvX4Eu1lgAGx97fpME7VqGFUODL2TurDJLoaY8YFDFEPVkJy4NAmMFYRMgxp1krx1kp4GuluQe4HHIBanTTh4+34I5c/GUQcct1KwklYY6MPfG5pWrPzoajuhjlIrZBdBhVTfZgqv6tJUr6M1tvNvZoSsZ3nihIg+MFRvFonhl7ePywKUxaE4+hW2nl7X8V0Xvfwohfwo8+ZxKQBrjs4ytxBB2XmlRzObu4WVtLC0MBzjlMN7nLCKQTVPv4m9H61IWdXHmecckFRzfsYhFDCfJdJeVTi6FqQiOI4astku/maMq7N0aE9pro+h4RbZ3m+l5Ov7+vb/oAIjUFoTuf6DfdIc53qaHctSNQQatQoHldTVEgmcUOYPqWKiIhkeR2c0oWQeT5SJa9me4EsxQddyUOeYpXfcK+dIKdjGK+jPfyYc5c84iKO2zH+JL8pwEQYeLjRHhxFsXGrI576Hw/iy34pcS5tS+rZbSm3svgVNYeFhIn5L3dfbqjmQ=
-  file_glob: true
-  file: $CRATE_NAME-$TRAVIS_TAG-$TARGET.*
-  on:
-    # TODO Here you can pick which targets will generate binary releases
-    # In this example, there are some targets that are tested using the stable
-    # and nightly channels. This condition makes sure there is only one release
-    # for such targets and that's generated using the stable channel
-    condition: $TRAVIS_RUST_VERSION = stable
-    tags: true
-  provider: releases
-  skip_cleanup: true
+  - api_key:
+      secure: ujZ+NwHHfOoaegmfoCqNUZnLQoXQESTDjlboT3qr1Bq23GSWq+mjyzxAameP95rqm8lPjmTc3LGba0mp8zGWi8cMHhppLViNzErPTai1y2LmjV7Me+APP+h/zmOGU+MvjBhYjsItUdqDvFKSu/XHQb+UGGpy0N9GhCrZij1fnO4z5b9yFEFvX4Eu1lgAGx97fpME7VqGFUODL2TurDJLoaY8YFDFEPVkJy4NAmMFYRMgxp1krx1kp4GuluQe4HHIBanTTh4+34I5c/GUQcct1KwklYY6MPfG5pWrPzoajuhjlIrZBdBhVTfZgqv6tJUr6M1tvNvZoSsZ3nihIg+MFRvFonhl7ePywKUxaE4+hW2nl7X8V0Xvfwohfwo8+ZxKQBrjs4ytxBB2XmlRzObu4WVtLC0MBzjlMN7nLCKQTVPv4m9H61IWdXHmecckFRzfsYhFDCfJdJeVTi6FqQiOI4astku/maMq7N0aE9pro+h4RbZ3m+l5Ov7+vb/oAIjUFoTuf6DfdIc53qaHctSNQQatQoHldTVEgmcUOYPqWKiIhkeR2c0oWQeT5SJa9me4EsxQddyUOeYpXfcK+dIKdjGK+jPfyYc5c84iKO2zH+JL8pwEQYeLjRHhxFsXGrI576Hw/iy34pcS5tS+rZbSm3svgVNYeFhIn5L3dfbqjmQ=
+    file_glob: true
+    file: $CRATE_NAME-$TRAVIS_TAG-$TARGET.*
+    on:
+      # TODO Here you can pick which targets will generate binary releases
+      # In this example, there are some targets that are tested using the stable
+      # and nightly channels. This condition makes sure there is only one release
+      # for such targets and that's generated using the stable channel
+      condition: $TRAVIS_RUST_VERSION = stable
+      tags: true
+    provider: releases
+    skip_cleanup: true
+  - provider: script
+    script: bash ci/docker_push.sh
+    on:
+      condition: $DOCKER_DEPLOY = 1
+      tags: true
 
 cache: cargo
 before_cache:

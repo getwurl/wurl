@@ -3,6 +3,7 @@
 set -ex
 
 main() {
+    cargo fmt --all -- --write-mode=diff
     cross build --target $TARGET --release
 
     if [ ! -z $DISABLE_TESTS ]; then
@@ -11,12 +12,6 @@ main() {
 
     cross test --target $TARGET --release
     cross run --target $TARGET --release -- --help
-
-    if [ -z $DOCKER_DEPLOY ]; then
-        echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        docker build -t "$DOCKER_USERNAME/$DOCKER_REPONAME:$TRAVIS_TAG" -t "$DOCKER_USERNAME/$DOCKER_REPONAME:latest" .
-        docker push "$DOCKER_USERNAME/$DOCKER_REPONAME"
-    fi
 }
 
 # we don't run the "test phase" when doing deploys
