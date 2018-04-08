@@ -48,7 +48,7 @@ matrix:
     - env: TARGET=powerpc64le-unknown-linux-gnu
     - env: TARGET=s390x-unknown-linux-gnu DISABLE_TESTS=1
     - env: TARGET=x86_64-unknown-linux-gnu
-    - env: TARGET=x86_64-unknown-linux-musl
+    - env: DOCKER_DEPLOY=1 TARGET=x86_64-unknown-linux-musl
 
     # OSX
     - env: TARGET=i686-apple-darwin
@@ -102,9 +102,6 @@ deploy:
     tags: true
   provider: releases
   skip_cleanup: true
-
-after_deploy:
-  - bash ci/docker_push.sh
 
 cache: cargo
 before_cache:
