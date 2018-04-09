@@ -68,6 +68,10 @@ After this, `wurl` listens to stdin and sends any lines it reads to the
 server as messages. WebSocket control frames are also supported, see the
 [control frames section](#control-frames) for more information about that.
 
+If you pass the `-e, --echo` flag, you will see outgoing frames as well. These
+are always prefixed with `>` and a space to ensure they are possible to filter
+out.
+
 ### Showing more information
 
 You may sometimes encounter issues connecting to a server. In this case it may
@@ -99,6 +103,9 @@ Upgrade: websocket
 
 Connected to wss://echo.websocket.org
 ```
+
+Displaying control frames may be useful, for example to see if your server is
+pinging correctly.
 
 ### Control frames
 
