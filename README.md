@@ -19,17 +19,88 @@ usable.
 
 ## Contents
 
+- [Highlights](#highlights)
 - [Usage](#usage)
 - [Control Frames](#control-frames)
+- [Examples](#examples)
 - [Plugins](#plugins)
 - [Wurl vs wsta](#wurl-vs-wsta)
 - [Install](#install)
 
+## Highlights
+
+- Transmit messages to and from WebSocket servers from a CLI
+- Composable by design, works great with UNIX pipes
+- Easy to learn
+- Inherently scriptable
+- Follows the UNIX philosophy of doing one thing, and doing it well
+- Written in rust, providing type safety and thread safety
+- Extensible as a rust library
+
 ## Usage
 
-TODO
+```
+USAGE:
+    wurl [FLAGS] [OPTIONS] <URL>
+FLAGS:
+    -e, --echo       Enables echoing of outgoing frames
+    -h, --help       Prints help information
+    -i, --include    Include the HTTP headers in the output
+    -s, --silent     Supresses all output except incoming frames
+    -V, --version    Prints version information
+    -v, --verbose    Increments verbosity by one
+OPTIONS:
+    -H, --header <header:value>...    Adds headers to the WebSocket HTTP handshake
+    -C, --control-frames <type>       Enables echoing of control frames [possible values: all, in, out]
+ARGS:
+    <URL>    The URL of the server to connect to
+```
 
-## Control frames
+### Connect to a server
+
+To connect to a server with `wurl`, you pass it the only required parameter, a
+URL of the WebSocket server.
+
+    $ wurl wss://echo.websocket.org
+    Connected to wss://echo.websocket.org
+
+After this, `wurl` listens to stdin and sends any lines it reads to the
+server as messages. WebSocket control frames are also supported, see the
+[control frames section](#control-frames) for more information about that.
+
+### Showing more information
+
+You may sometimes encounter issues connecting to a server. In this case it may
+be useful to see more information about the WebSocket upgrade request. In order
+to do this, pass the `-i` flag.
+
+```
+$ wurl -i wss://echo.websocket.org
+WebSocket upgrade request
+---
+GET / HTTP/1.1
+Connection: Upgrade
+Host: echo.websocket.org:443
+Sec-WebSocket-Version: 13
+Sec-WebSocket-Key: bIkIvw9EcchOo931ELJpOg==
+Upgrade: websocket
+Origin: https://echo.websocket.org
+
+
+WebSocket upgrade response
+---
+HTTP/1.1 101 Web Socket Protocol Handshake
+Connection: Upgrade
+Date: Mon, 09 Apr 2018 18:00:10 GMT
+Sec-WebSocket-Accept: 9j72nbYPuMMhmEpRl4xmN+YnZDI=
+Server: Kaazing Gateway
+Upgrade: websocket
+
+
+Connected to wss://echo.websocket.org
+```
+
+### Control frames
 
 It will be supported to send control frames to the server using commands. The
 currently available commands are:
@@ -43,6 +114,17 @@ currently available commands are:
 
 If you need to send a frame which contains a leading slash like the above
 commands, add a leading space to escape it.
+
+### Authentication
+
+Authentication is not built in to `wurl`, but setting custom headers is
+possible. Use the `-H` option to set as many authentication headers as you need.
+
+For an easy way of setting an authentication header automatically, see
+[wurl-auth][wurl_auth].
+
+## Examples
+
 
 ## Plugins
 
@@ -63,7 +145,7 @@ _Feel free to add to this list if you created something cool._
 - Is now a library in addition to a CLI which makes it possible for rust
   programmers to programmatically control wurl
 - Supports control frames
-- Follows the unix philosophy, and is just as pipe-friendly as wsta
+- Follows the UNIX philosophy, and is just as pipe-friendly as wsta
 - Supports musl-based OSes (like alpine linux)
 - Supports LibreSSL-based OSes??
 - OSes via first-party distributed docker image
