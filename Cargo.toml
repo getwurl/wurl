@@ -1,7 +1,7 @@
 [package]
 name = "wurl"
 description = "WebSocket CLI for developers"
-version = "0.1.0"
+version = "0.1.1-alpha.0"
 authors = ["Espen Henriksen <dev+wurl@henriksen.is>"]
 keywords = ["websocket", "ws", "cli", "devtool"]
 license = "GPL-3.0"
