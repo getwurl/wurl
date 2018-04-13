@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["options","The command line options provided to the program"]]});
