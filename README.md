@@ -177,11 +177,12 @@ Third party distibution:
 
 ### [crates.io][crates.io]
 
-> NOT YET PUBLISHED
+If you are a rust programmer, it is easy to install wurl using the cargo CLI.
 
     $ cargo install wurl
 
-If you are a rust programmer, it is easy to install wurl using the cargo CLI.
+Remember to make sure that `$HOME/.cargo/bin` is on your `$PATH`, or you will
+not be able to find the installed binary.
 
 To update to a newer version, simply overwrite the old executable when
 installing.
@@ -190,7 +191,8 @@ installing.
 
 ### [binaries][binaries]
 
-All tagged releases on GitHub have compiled binaries attached to them.
+All tagged releases on GitHub have compiled binaries attached to them. See the
+[releases page][binaries] for the download links for your system.
 
 ### [docker][docker]
 
