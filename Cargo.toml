@@ -45,7 +45,7 @@ stderrlog = "0.3.0"
 
 [build-dependencies.ws]
 version = "0.7.6"
-features = ["ssl"]
+features = ["ssl", "permessage-deflate"]
 
 
 [features]
