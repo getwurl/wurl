@@ -22,6 +22,10 @@ main() {
 
     cross test --target $TARGET --release
     cross run --target $TARGET --release -- --help
+
+    if [ ! -z $STATIC ]; then
+      ldd target/$TARGET/release/$CRATE_NAME
+    fi
 }
 
 # we don't run the "test phase" when doing deploys
