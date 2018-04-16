@@ -24,7 +24,7 @@ main() {
     cross run --target $TARGET --release -- --help
 
     if [ ! -z $STATIC ]; then
-      ldd target/$TARGET/release/$CRATE_NAME
+      ldd target/$TARGET/release/$CRATE_NAME || true
     fi
 }
 
