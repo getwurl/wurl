@@ -3,7 +3,7 @@
 set -ex
 
 main() {
-    if [ -z $STATIC ]; then
+    if [ ! -z $STATIC ]; then
       echo Enabling static build
       export OPENSSL_STATIC=true
       export OPENSSL_LIB_DIR=/usr/lib
