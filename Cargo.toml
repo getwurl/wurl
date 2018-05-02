@@ -41,7 +41,7 @@ version = "0.3.0"
 clap = "2.31.2"
 log = "0.4.1"
 rprompt = "1.0.3"
-stderrlog = "0.3.0"
+stderrlog = "0.4.0"
 
 [build-dependencies.ws]
 version = "0.7.6"
