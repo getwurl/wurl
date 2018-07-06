@@ -34,7 +34,7 @@ version = "1.0.3"
 
 [dependencies.stderrlog]
 optional = true
-version = "0.3.0"
+version = "0.4.1"
 
 
 [build-dependencies]
