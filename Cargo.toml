@@ -34,14 +34,14 @@ version = "1.0.3"
 
 [dependencies.stderrlog]
 optional = true
-version = "0.3.0"
+version = "0.5.0"
 
 
 [build-dependencies]
 clap = "2.31.2"
 log = "0.4.1"
 rprompt = "1.0.3"
-stderrlog = "0.4.0"
+stderrlog = "0.5.0"
 
 [build-dependencies.ws]
 version = "0.7.6"
